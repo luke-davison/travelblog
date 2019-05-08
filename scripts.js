@@ -18,6 +18,20 @@ var page = {lat: 36.8953, lng: -111.4882}
 var springdale = {lat: 37.1889, lng: -112.9988}
 var zion = {lat: 37.2528, lng: -112.9557}
 var glendale = {lat: 37.3214, lng: -112.5973}
+var bryce = {lat: 37.6723, lng: -112.1569}
+var bryceCanyon = {lat: 37.6101, lng: -112.18}
+var tropic = {lat: 37.6223, lng: -112.0813}
+var evanston = {lat: 41.2567, lng: -110.9591}
+var oldFaithful = {lat: 44.4558, lng: -110.832}
+var yellowstone = {lat: 44.6653, lng: -110.4663}
+var towerJunction = {lat: 44.9152, lng: -110.4163}
+var lamarValley = {lat: 44.8676, lng: -110.1792}
+var mammothJunction = {lat: 44.9753, lng: -110.702}
+var westYellowstone = {lat: 44.6275, lng: -111.3318}
+var saltLakeCity = {lat: 40.7819, lng: -111.9816}
+var orlando = {lat: 28.4316, lng: -81.3082}
+var diceTowerCon = {lat: 28.3594, lng: -81.4934}
+var newYork = {lat: 40.753, lng: -73.9787}
 
 var timetable = [
   {
@@ -155,14 +169,173 @@ var timetable = [
     zoom: 11
   },
   {
-    startTime: '2019/06/27 15:00mt',
+    startTime: '2019/06/27 19:00mt',
     name: 'Staying in Glendale',
     start: glendale,
     zoom: 10
   },
+  {
+    startTime: '2019/06/28 8:00mt',
+    name: 'Driving to Bryce Canyon',
+    travelType: 'car',
+    start: glendale,
+    end: bryce,
+    zoom: 10
+  },
+  {
+    startTime: '2019/06/28 12:00mt',
+    name: 'Exploring Bryce Canyon',
+    start: bryceCanyon,
+    zoom: 13
+  },
+  {
+    startTime: '2019/06/28 18:00mt',
+    name: 'Driving to Tropic',
+    travelType: 'car',
+    start: bryce,
+    end: tropic,
+    zoom: 12
+  },
+  {
+    startTime: '2019/06/28 19:00mt',
+    name: 'Staying in Tropic',
+    start: tropic,
+    zoom: 12
+  },
+  {
+    startTime: '2019/06/29 8:00mt',
+    name: 'Driving to Evanston',
+    travelType: 'car',
+    start: tropic,
+    end: evanston,
+    zoom: 7
+  },
+  {
+    startTime: '2019/06/29 19:00mt',
+    name: 'Staying in Evanston',
+    start: evanston,
+    zoom: 10
+  },
+  {
+    startTime: '2019/06/30 8:00mt',
+    name: 'Driving to Yellowstone',
+    travelType: 'car',
+    start: evanston,
+    end: oldFaithful,
+    zoom: 7
+  },
+  {
+    startTime: '2019/06/30 19:00mt',
+    name: 'Staying near Old Faithful',
+    start: oldFaithful,
+    zoom: 12
+  },
+  {
+    startTime: '2019/07/01 8:00mt',
+    name: 'Exploring Yellowstone',
+    travelType: 'car',
+    start: oldFaithful,
+    via: [yellowstone],
+    end: towerJunction,
+    zoom: 11
+  },
+  {
+    startTime: '2019/07/01 19:00mt',
+    name: 'Staying at Tower Junction',
+    start: towerJunction,
+    zoom: 12
+  },
+  {
+    startTime: '2019/07/02 8:00mt',
+    name: 'Exploring Yellowstone',
+    travelType: 'car',
+    start: towerJunction,
+    via: [lamarValley, mammothJunction],
+    end: westYellowstone,
+    zoom: 10
+  },
+  {
+    startTime: '2019/07/02 19:00mt',
+    name: 'Staying west of Yellowstone',
+    start: westYellowstone,
+    zoom: 10
+  },
+  {
+    startTime: '2019/07/03 8:00mt',
+    name: 'Driving to Salt Lake City',
+    travelType: 'car',
+    start: westYellowstone,
+    end: saltLakeCity,
+    zoom: 7
+  },
+  {
+    startTime: '2019/07/03 16:00mt',
+    name: 'Staying in Salt Lake City',
+    travelType: 'car',
+    start: saltLakeCity,
+    zoom: 10
+  },
+  {
+    startTime: '2019/07/04 9:00mt',
+    name: 'Flying to Orlando',
+    travelType: 'plane',
+    start: saltLakeCity,
+    end: orlando,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/04 16:00mt',
+    name: 'Staying in Orlando',
+    start: orlando,
+    zoom: 11
+  },
+  {
+    startTime: '2019/07/05 8:00mt',
+    name: 'Attending Dice Tower Con',
+    start: diceTowerCon,
+    zoom: 13
+  },
+  {
+    startTime: '2019/07/05 19:00mt',
+    name: 'Staying in Orlando',
+    start: orlando,
+    zoom: 11
+  },
+  {
+    startTime: '2019/07/06 8:00mt',
+    name: 'Playing board games at Dice Tower Con',
+    start: diceTowerCon,
+    zoom: 13
+  },
+  {
+    startTime: '2019/07/06 19:00mt',
+    name: 'Staying in Orlando',
+    start: orlando,
+    zoom: 11
+  },
+  {
+    startTime: '2019/07/07 8:00mt',
+    name: 'Hopefully not buying too many games at Dice Tower Con',
+    start: diceTowerCon,
+    zoom: 13
+  },
+  {
+    startTime: '2019/07/07 19:00mt',
+    name: 'Staying in Orlando',
+    start: orlando,
+    zoom: 11
+  },
+  {
+    startTime: '2019/07/08 11:00mt',
+    name: 'Overnight train to New York',
+    travelType: 'train',
+    start: orlando,
+    end: newYork,
+    zoom: 5
+  },
 ]
 
-function initMap(index = 19) {
+function initMap(index = 42) {
   map = new google.maps.Map(document.getElementById('map'), {
     center: getCenter(timetable[index].start, timetable[index].end),
     disableDefaultUI: true,
