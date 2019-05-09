@@ -1,11 +1,4 @@
-var map;
-var startLatLng;
-var endLatLng;
-var centerLatLng;
-var zoom;
-var directionsService;
-var directionsDisplay;
-
+var newZealand = {lat: -39.6775, lng: 174.5588}
 var auckland = {lat: -37.003, lng: 174.7893}
 var sanFrancisco = {lat: 37.7992, lng: -122.4316}
 var yosemite = {lat: 37.7378, lng: -119.5722}
@@ -34,6 +27,12 @@ var diceTowerCon = {lat: 28.3594, lng: -81.4934}
 var newYork = {lat: 40.753, lng: -73.9787}
 
 var timetable = [
+  {
+    startTime: '2019/05/09 9:00nz',
+    name: 'Still in New Zealand',
+    start: newZealand,
+    zoom: 6
+  },
   {
     startTime: '2019/06/19 7:45nz',
     name: 'Flying to San Francisco',
@@ -334,28 +333,3 @@ var timetable = [
     zoom: 5
   },
 ]
-
-function initMap(index = 42) {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: getCenter(timetable[index].start, timetable[index].end),
-    disableDefaultUI: true,
-    // draggable: false,
-    zoom: timetable[index].zoom
-  });
-}
-
-function getCenter(coord1, coord2) {
-  if (!coord2) {
-    return coord1
-  }
-  const lat = (coord1.lat + coord2.lat) / 2
-  let lng = (coord1.lng + coord2.lng) / 2
-  if ((coord1.lng > 90 && coord2.lng < -90) || (coord2.lng > 90 && coord1.lng < -90)) {
-    lng = (coord1.lng + coord2.lng + 360) / 2
-    if (lng > 180) {
-      lng -= 360
-    }
-  }
-  // console.log(lat, lng)
-  return {lat, lng}
-}
