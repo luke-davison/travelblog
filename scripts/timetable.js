@@ -249,7 +249,7 @@ var timetable = [
     name: 'Exploring Yellowstone',
     travelType: 'car',
     start: towerJunction,
-    via: [lamarValley, mammothJunction],
+    via: [lamarValley],
     end: westYellowstone,
     zoom: 10
   },

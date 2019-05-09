@@ -1,19 +1,54 @@
 var map;
-var startLatLng;
-var endLatLng;
-var centerLatLng;
-var zoom;
 var directionsService;
 var directionsDisplay;
 
+
 function initMap() {
-  const event = findCurrentActivity()
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: getCenter(event.start, event.end),
+  const {travelType, start, end, via, zoom} = findCurrentActivity()
+  const mapOptions = {
+    center: getCenter(start, end),
     disableDefaultUI: true,
     // draggable: false,
-    zoom: event.zoom
-  });
+    zoom: zoom
+  }
+
+  map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+  if (travelType === 'plane') {
+    const lineSymbol = {
+      path: 'M 0,-1 0,1',
+      strokeOpacity: 1,
+      scale: 4
+    };
+    const flightOptions = {
+      path: [start, end],
+      strokeOpacity: 0,
+      icons: [{
+        icon: lineSymbol,
+        offset: '0',
+        repeat: '20px'
+      }],
+      map
+    }
+    new google.maps.Polyline(flightOptions);
+  }
+
+  if (travelType === 'car') {
+    directionsService = new google.maps.DirectionsService();
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay.setMap(map);
+    var request = {
+      origin: start,
+      destination: end,
+      travelMode: 'DRIVING',
+      waypoints: (via || []).map((location) => {return {location, stopover: true}})
+    };
+    directionsService.route(request, (result, status) => {
+      if (status == 'OK') {
+        directionsDisplay.setDirections(result);
+      }
+    });
+  }
 }
 
 function findCurrentActivity() {

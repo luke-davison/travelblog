@@ -1,5 +1,5 @@
 //const now = new Date()
-const now = new Date(2019, 6, 1, 9, 45) // used for testing
+const now = new Date(2019, 6, 2, 9, 45) // used for testing
 
 function getCenter(coord1, coord2) {
   if (!coord2) {
