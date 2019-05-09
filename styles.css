@@ -6,7 +6,27 @@
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
-    height: 100%;
+    min-height: 100%;
     margin: 0;
     padding: 0;
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+}
+
+body {
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+#page-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+}
+
+#event-details {
+    grid-column: 1 / span 3;
 }
