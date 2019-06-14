@@ -1,5 +1,5 @@
-// const now = new Date()
-const now = new Date(2019, 6, 2, 9, 45) // used for testing
+const now = new Date()
+// const now = new Date(2019, 6, 2, 9, 45) // used for testing
 
 function getCenter (coord1, coord2) {
   if (!coord2) {
@@ -51,7 +51,6 @@ function getTimezoneFromString (string) {
 }
 
 function getTimezoneOffset (timezone) {
-  console.log(timezone)
   switch (timezone) {
     case 'et': return -(6 * 60)
     case 'mt': return -(7 * 60)
@@ -67,6 +66,17 @@ function getUtcTime (date) {
     date = now
   }
   return new Date(date.getTime() + (date.getTimezoneOffset() * 60000))
+}
+
+function getDifferenceInHours (date) {
+  const now = getUtcTime().getTime()
+  const then = getUtcTime(date).getTime()
+  const hoursAgo = Math.floor((then - now) / (1000 * 60 * 60))
+  if (hoursAgo <= 0) {
+    return hoursAgo + ' hour(s) ago'
+  } else {
+    return 'In ' + hoursAgo + ' hour(s) time'
+  }
 }
 
 var newZealand = {lat: -39.6775, lng: 174.5588}
@@ -420,8 +430,8 @@ var timetable = [
   {
     startTime: '2019/07/09 11:00et',
     name: 'Exploring New York',
-    start: orlando,
-    zoom: 11
+    start: newYork,
+    zoom: 12
   },
   {
     startTime: '2019/07/14 12:00et',
@@ -430,13 +440,13 @@ var timetable = [
     start: newYork,
     via: [montreal],
     end: quebec,
-    zoom: 5
+    zoom: 6
   },
   {
     startTime: '2019/07/14 17:00et',
     name: 'Exploring Quebec',
     start: quebec,
-    zoom: 5
+    zoom: 11
   },
   {
     startTime: '2019/07/17 8:00et',
@@ -444,13 +454,13 @@ var timetable = [
     travelType: 'plane',
     start: montreal,
     end: quebec,
-    zoom: 5
+    zoom: 8
   },
   {
     startTime: '2019/07/17 12:00et',
     name: 'Exploring Montreal',
     start: montreal,
-    zoom: 5
+    zoom: 11
   },
   {
     startTime: '2019/07/18 18:00et',
@@ -458,14 +468,14 @@ var timetable = [
     travelType: 'plane',
     start: montreal,
     end: calgary,
-    zoom: 5
+    zoom: 4
   },
   {
     startTime: '2019/07/18 21:00mt',
     name: 'Staying in Calgary',
     travelType: 'plane',
     start: calgary,
-    zoom: 5
+    zoom: 10
   },
   {
     startTime: '2019/07/19 10:00mt',
@@ -473,43 +483,43 @@ var timetable = [
     travelType: 'car',
     start: calgary,
     end: banff,
-    zoom: 5
+    zoom: 9
   },
   {
     startTime: '2019/07/19 12:00mt',
     name: 'Exploring Banff',
     start: banff,
-    zoom: 5
+    zoom: 10
   },
   {
     startTime: '2019/07/19 18:00mt',
     name: 'Staying in Canmore',
     start: canmore,
-    zoom: 5
+    zoom: 12
   },
   {
     startTime: '2019/07/20 9:00mt',
     name: 'Exploring Banff',
     start: banff,
-    zoom: 5
+    zoom: 10
   },
   {
     startTime: '2019/07/20 18:00mt',
     name: 'Staying in Canmore',
     start: canmore,
-    zoom: 5
+    zoom: 12
   },
   {
     startTime: '2019/07/21 9:00mt',
     name: 'Exploring Banff',
     start: banff,
-    zoom: 5
+    zoom: 10
   },
   {
     startTime: '2019/07/21 18:00mt',
     name: 'Staying in Canmore',
     start: canmore,
-    zoom: 5
+    zoom: 12
   },
   {
     startTime: '2019/07/22 9:00mt',
@@ -517,13 +527,13 @@ var timetable = [
     travelType: 'car',
     start: canmore,
     end: jasper,
-    zoom: 5
+    zoom: 7
   },
   {
     startTime: '2019/07/22 15:00mt',
     name: 'Exploring Jasper',
     start: jasper,
-    zoom: 5
+    zoom: 10
   },
   {
     startTime: '2019/07/24 10:00mt',
@@ -531,13 +541,13 @@ var timetable = [
     travelType: 'car',
     start: jasper,
     end: kamloops,
-    zoom: 5
+    zoom: 7
   },
   {
     startTime: '2019/07/24 18:00pt',
     name: 'Staying in Kamloops',
     start: kamloops,
-    zoom: 5
+    zoom: 12
   },
   {
     startTime: '2019/07/25 10:00pt',
@@ -545,13 +555,13 @@ var timetable = [
     travelType: 'car',
     start: kamloops,
     end: vancouver,
-    zoom: 5
+    zoom: 8
   },
   {
     startTime: '2019/07/25 15:00pt',
     name: 'Exploring Vancouver',
     start: vancouver,
-    zoom: 5
+    zoom: 11
   },
   {
     startTime: '2019/07/28 20:00et',
@@ -559,20 +569,20 @@ var timetable = [
     travelType: 'plane',
     start: vancouver,
     end: auckland,
-    zoom: 5
+    zoom: 3
   },
   {
     startTime: '2019/07/30 5:00nz',
     name: 'Back in New Zealand',
     start: newZealand,
-    zoom: 5
+    zoom: 6
   }
 ]
 
 var map
 
 function initMap () {
-  const {start, end, zoom} = findCurrentActivity()
+  const {start, end, zoom} = timetable[currentActivityIndex]
   const mapOptions = {
     center: getCenter(start, end),
     disableDefaultUI: true,
@@ -586,16 +596,21 @@ function initMap () {
   drawRoadTrips()
 }
 
-function findCurrentActivity () {
-  return timetable.find((event, index) => {
-    const nextEvent = timetable.length > index + 1 ? timetable[index + 1] : undefined
-    if (!nextEvent) {
-      return true
-    }
+var currentActivityIndex = timetable.findIndex((event, index) => {
+  const nextEvent = timetable.length > index + 1 ? timetable[index + 1] : undefined
+  if (!nextEvent) {
+    return true
+  }
 
-    const eventDate = getTimeFromString(nextEvent.startTime)
-    return eventDate > now
-  }) || {}
+  const eventDate = getTimeFromString(nextEvent.startTime)
+  return eventDate > now
+}) || 0
+var ourCurrentActivity = currentActivityIndex
+
+function getRecentEvents () {
+  return timetable.filter((event, index) => {
+    return Math.abs(index - currentActivityIndex) < 3
+  })
 }
 
 function updateTimesOnPage () {
@@ -607,7 +622,7 @@ function updateTimesOnPage () {
     <div>${getPrettyDate(yourTime)}</div>
   `
 
-  const ourTimezone = getTimezoneFromString(findCurrentActivity().startTime)
+  const ourTimezone = getTimezoneFromString(timetable[ourCurrentActivity].startTime)
   const ourTime = getLocalTime({timezone: ourTimezone})
   document.getElementById('our-time').innerHTML = `
     <div>Our Time</div>
@@ -633,95 +648,124 @@ function updateEventDetails (event) {
   `
 }
 
+function setEvent (index) {
+  currentActivityIndex = index
+  updateTimesOnPage()
+  updateEventDetails(timetable[currentActivityIndex])
+  createEventsList()
+  initMap()
+}
+
 function createEventsList () {
   let eventsList = ''
-  timetable.forEach((event) => {
+  const numOfEvents = 2
+
+  for (let i = currentActivityIndex - numOfEvents; i < currentActivityIndex; i++) {
+    if (i < 0) {
+      continue
+    }
+    const event = timetable[i]
+    const startDate = getTimeFromString(timetable[i + 1].startTime)
+    const hoursAgo = getDifferenceInHours(startDate)
+
     eventsList += `
-      <div>${event.name}<div>
+      <div>
+        <div>${hoursAgo}</div>
+        <div><a href="#" onClick="setEvent(${i})">${event.name}</a></div>
+      <div>
     `
-  })
+  }
+
+  eventsList += `
+      <div>
+        <div></div>
+        <div>${timetable[currentActivityIndex].name}</div>
+      <div>
+    `
+
+  for (let i = currentActivityIndex + 1; i < currentActivityIndex + numOfEvents + 1; i++) {
+    if (i > timetable.length - 1) {
+      continue
+    }
+    const event = timetable[i]
+    const startDate = getTimeFromString(timetable[i].startTime)
+    const hoursAgo = getDifferenceInHours(startDate)
+
+    eventsList += `
+      <div>
+        <div>${hoursAgo}</div>
+        <div><a href="#" onClick="setEvent(${i})">${event.name}</a></div>
+      <div>
+    `
+  }
 
   document.getElementById('event-list').innerHTML = eventsList
 }
 
 function drawFlights () {
-  timetable.forEach(({travelType, start, via, end}) => {
-    if (travelType === 'plane' || travelType === 'train') {
-      const linesToDraw = []
-      if (via) {
-        via.forEach((place, index) => {
-          linesToDraw.push({start: index > 0 ? via[index - 1] : start, end: place})
-        })
-        linesToDraw.push({start: via[via.length - 1], end})
-      } else {
-        linesToDraw.push({start, end})
-      }
-      const lineSymbol = {
-        path: 'M 0,-1 0,1',
-        strokeOpacity: 1,
-        scale: 4
-      }
+  const {travelType, start, via, end} = timetable[currentActivityIndex]
+  if (travelType !== 'plane' && travelType !== 'train') {
+    return
+  }
 
-      linesToDraw.forEach((lineToDraw) => {
-        const flightOptions = {
-          path: [lineToDraw.start, lineToDraw.end],
-          strokeOpacity: 0,
-          icons: [{
-            icon: lineSymbol,
-            offset: '0',
-            repeat: '20px'
-          }],
-          map
-        }
-        new google.maps.Polyline(flightOptions)
-      })
+  const linesToDraw = []
+  if (via) {
+    via.forEach((place, index) => {
+      linesToDraw.push({start: index > 0 ? via[index - 1] : start, end: place})
+    })
+    linesToDraw.push({start: via[via.length - 1], end})
+  } else {
+    linesToDraw.push({start, end})
+  }
+  const lineSymbol = {
+    path: 'M 0,-1 0,1',
+    strokeOpacity: 1,
+    scale: 4
+  }
+
+  linesToDraw.forEach((lineToDraw) => {
+    const flightOptions = {
+      path: [lineToDraw.start, lineToDraw.end],
+      strokeOpacity: 0,
+      icons: [{
+        icon: lineSymbol,
+        offset: '0',
+        repeat: '20px'
+      }],
+      map
     }
+    new google.maps.Polyline(flightOptions)
   })
 }
 
 function drawRoadTrips () {
-  let inProgress = false
-  timetable.reduce((trips, event) => {
-    if (!event.travelType) {
-      return trips
+  const {travelType, start, via, end} = timetable[currentActivityIndex]
+  if (travelType !== 'car' || !end) {
+    return
+  }
+
+  const directionsService = new google.maps.DirectionsService()
+  const directionsDisplay = new google.maps.DirectionsRenderer({
+    suppressMarkers: true
+  })
+  directionsDisplay.setMap(map)
+  var request = {
+    origin: start,
+    destination: end,
+    travelMode: 'DRIVING',
+    waypoints: (via || []).map((location) => { return {location, stopover: true} })
+  }
+  directionsService.route(request, (result, status) => {
+    if (status === 'OK') {
+      directionsDisplay.setDirections(result)
     }
-    if (event.travelType === 'car') {
-      let trip
-      if (!inProgress) {
-        trip = {start: event.start, via: []}
-        trips.push(trip)
-        inProgress = true
-      } else {
-        trip = trips[trips.length - 1]
-        trip.via.push(event.start)
-      }
-      (event.via || []).forEach((waypoint) => trip.via.push(waypoint))
-      trip.end = event.end
-    } else {
-      inProgress = false
-    }
-    return trips
-  }, []).forEach(({start, end, via}) => {
-    console.log(start, end, via)
-    const directionsService = new google.maps.DirectionsService()
-    const directionsDisplay = new google.maps.DirectionsRenderer({
-      suppressMarkers: true
-    })
-    directionsDisplay.setMap(map)
-    var request = {
-      origin: start,
-      destination: end,
-      travelMode: 'DRIVING',
-      waypoints: (via || []).map((location) => { return {location, stopover: true} })
-    }
-    directionsService.route(request, (result, status) => {
-      if (status === 'OK') {
-        directionsDisplay.setDirections(result)
-      }
-    })
   })
 }
 
+function createButtons () {
+
+}
+
 updateTimesOnPage()
-// updateEventDetails(findCurrentActivity())
+updateEventDetails(timetable[currentActivityIndex])
 createEventsList()
