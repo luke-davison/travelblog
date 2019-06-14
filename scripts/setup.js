@@ -95,6 +95,11 @@ var westYellowstone = {lat: 44.6275, lng: -111.3318}
 var saltLakeCity = {lat: 40.7819, lng: -111.9816}
 var orlando = {lat: 28.4316, lng: -81.3082}
 var diceTowerCon = {lat: 28.3594, lng: -81.4934}
+var jacksonville = {lat: 30.3205, lng: -81.6701}
+var savannah = {lat: 32.1331, lng: -81.4473}
+var northCarolina = {lat: 36.1639, lng: -77.6497}
+var fredericksburg = {lat: 38.3324, lng: -77.5011}
+var belAir = {lat: 39.527, lng: -76.2653}
 var newYork = {lat: 40.753, lng: -73.9787}
 var montreal = {lat: 45.5363, lng: -73.6428}
 var quebec = {lat: 46.8079, lng: -71.2279}
@@ -362,125 +367,204 @@ var timetable = [
     zoom: 5
   },
   {
-    startTime: '2019/07/04 16:00mt',
+    startTime: '2019/07/04 16:00et',
     name: 'Staying in Orlando',
     start: orlando,
     zoom: 11
   },
   {
-    startTime: '2019/07/05 8:00mt',
+    startTime: '2019/07/05 8:00et',
     name: 'Attending Dice Tower Con',
     start: diceTowerCon,
     zoom: 13
   },
   {
-    startTime: '2019/07/05 19:00mt',
+    startTime: '2019/07/05 19:00et',
     name: 'Staying in Orlando',
     start: orlando,
     zoom: 11
   },
   {
-    startTime: '2019/07/06 8:00mt',
+    startTime: '2019/07/06 8:00et',
     name: 'Playing board games at Dice Tower Con',
     start: diceTowerCon,
     zoom: 13
   },
   {
-    startTime: '2019/07/06 19:00mt',
+    startTime: '2019/07/06 19:00et',
     name: 'Staying in Orlando',
     start: orlando,
     zoom: 11
   },
   {
-    startTime: '2019/07/07 8:00mt',
+    startTime: '2019/07/07 8:00et',
     name: 'Hopefully not buying too many games at Dice Tower Con',
     start: diceTowerCon,
     zoom: 13
   },
   {
-    startTime: '2019/07/07 19:00mt',
+    startTime: '2019/07/07 19:00et',
     name: 'Staying in Orlando',
     start: orlando,
     zoom: 11
   },
   {
-    startTime: '2019/07/08 11:00mt',
+    startTime: '2019/07/08 12:00et',
     name: 'Overnight train to New York',
     travelType: 'train',
     start: orlando,
+    via: [jacksonville, savannah, northCarolina, fredericksburg, belAir],
     end: newYork,
     zoom: 5
   },
   {
-    startTime: '2019/07/08 11:00mt',
-    name: 'Flight to Montreal',
+    startTime: '2019/07/09 11:00et',
+    name: 'Exploring New York',
+    start: orlando,
+    zoom: 11
+  },
+  {
+    startTime: '2019/07/14 12:00et',
+    name: 'Flight to Quebec',
     travelType: 'plane',
     start: newYork,
-    end: montreal,
+    via: [montreal],
+    end: quebec,
     zoom: 5
   },
   {
-    startTime: '2019/07/08 11:00mt',
-    name: 'Overnight train to New York',
+    startTime: '2019/07/14 17:00et',
+    name: 'Exploring Quebec',
+    start: quebec,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/17 8:00et',
+    name: 'Train to Montreal',
     travelType: 'plane',
     start: montreal,
     end: quebec,
     zoom: 5
   },
   {
-    startTime: '2019/07/08 11:00mt',
-    name: 'Overnight train to New York',
+    startTime: '2019/07/17 12:00et',
+    name: 'Exploring Montreal',
+    start: montreal,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/18 18:00et',
+    name: 'Flight to Calgary',
     travelType: 'plane',
     start: montreal,
     end: calgary,
     zoom: 5
   },
   {
-    startTime: '2019/07/08 11:00mt',
-    name: 'Overnight train to New York',
-    travelType: 'car',
+    startTime: '2019/07/18 21:00mt',
+    name: 'Staying in Calgary',
+    travelType: 'plane',
     start: calgary,
-    end: canmore,
     zoom: 5
   },
   {
-    startTime: '2019/07/08 11:00mt',
-    name: 'Overnight train to New York',
+    startTime: '2019/07/19 10:00mt',
+    name: 'Driving to Banff',
     travelType: 'car',
-    start: canmore,
+    start: calgary,
     end: banff,
     zoom: 5
   },
   {
-    startTime: '2019/07/08 11:00mt',
-    name: 'Overnight train to New York',
-    travelType: 'car',
+    startTime: '2019/07/19 12:00mt',
+    name: 'Exploring Banff',
     start: banff,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/19 18:00mt',
+    name: 'Staying in Canmore',
+    start: canmore,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/20 9:00mt',
+    name: 'Exploring Banff',
+    start: banff,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/20 18:00mt',
+    name: 'Staying in Canmore',
+    start: canmore,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/21 9:00mt',
+    name: 'Exploring Banff',
+    start: banff,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/21 18:00mt',
+    name: 'Staying in Canmore',
+    start: canmore,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/22 9:00mt',
+    name: 'Driving to Jasper',
+    travelType: 'car',
+    start: canmore,
     end: jasper,
     zoom: 5
   },
   {
-    startTime: '2019/07/08 11:00mt',
-    name: 'Overnight train to New York',
+    startTime: '2019/07/22 15:00mt',
+    name: 'Exploring Jasper',
+    start: jasper,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/24 10:00mt',
+    name: 'Driving to Kamloops',
     travelType: 'car',
     start: jasper,
     end: kamloops,
     zoom: 5
   },
   {
-    startTime: '2019/07/08 11:00mt',
-    name: 'Overnight train to New York',
+    startTime: '2019/07/24 18:00pt',
+    name: 'Staying in Kamloops',
+    start: kamloops,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/25 10:00pt',
+    name: 'Driving to Vancouver',
     travelType: 'car',
     start: kamloops,
     end: vancouver,
     zoom: 5
   },
   {
-    startTime: '2019/07/08 11:00mt',
-    name: 'Overnight train to New York',
+    startTime: '2019/07/25 15:00pt',
+    name: 'Exploring Vancouver',
+    start: vancouver,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/28 20:00et',
+    name: 'Flight back to New Zealand',
     travelType: 'plane',
     start: vancouver,
     end: auckland,
+    zoom: 5
+  },
+  {
+    startTime: '2019/07/30 5:00nz',
+    name: 'Back in New Zealand',
+    start: newZealand,
     zoom: 5
   }
 ]
@@ -561,24 +645,36 @@ function createEventsList () {
 }
 
 function drawFlights () {
-  timetable.forEach(({travelType, start, end}) => {
+  timetable.forEach(({travelType, start, via, end}) => {
     if (travelType === 'plane' || travelType === 'train') {
+      const linesToDraw = []
+      if (via) {
+        via.forEach((place, index) => {
+          linesToDraw.push({start: index > 0 ? via[index - 1] : start, end: place})
+        })
+        linesToDraw.push({start: via[via.length - 1], end})
+      } else {
+        linesToDraw.push({start, end})
+      }
       const lineSymbol = {
         path: 'M 0,-1 0,1',
         strokeOpacity: 1,
         scale: 4
       }
-      const flightOptions = {
-        path: [start, end],
-        strokeOpacity: 0,
-        icons: [{
-          icon: lineSymbol,
-          offset: '0',
-          repeat: '20px'
-        }],
-        map
-      }
-      new google.maps.Polyline(flightOptions)
+
+      linesToDraw.forEach((lineToDraw) => {
+        const flightOptions = {
+          path: [lineToDraw.start, lineToDraw.end],
+          strokeOpacity: 0,
+          icons: [{
+            icon: lineSymbol,
+            offset: '0',
+            repeat: '20px'
+          }],
+          map
+        }
+        new google.maps.Polyline(flightOptions)
+      })
     }
   })
 }
