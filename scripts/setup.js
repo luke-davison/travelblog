@@ -21,8 +21,7 @@ function getDayOfWeek (date) {
 }
 
 function getLocalTime ({timezone, date} = {}) {
-  const offset = timezone ? getTimezoneOffset(timezone) : now.getTimezoneOffset()
-  console.log(offset)
+  const offset = timezone ? getTimezoneOffset(timezone) : 0 - now.getTimezoneOffset()
   return new Date(getUtcTime(date).getTime() + (offset * 60000))
 }
 
@@ -73,10 +72,16 @@ function getDifferenceInHours (date) {
   const now = getUtcTime().getTime()
   const then = getUtcTime(date).getTime()
   const hoursAgo = Math.floor((then - now) / (1000 * 60 * 60))
+  if (hoursAgo === -1) {
+    return '1 hour ago'
+  }
+  if (hoursAgo === 1) {
+    return 'In 1 hour\'s time'
+  }
   if (hoursAgo <= 0) {
-    return hoursAgo + ' hour(s) ago'
+    return (-hoursAgo) + ' hour(s) ago'
   } else {
-    return 'In ' + hoursAgo + ' hour(s) time'
+    return 'In ' + hoursAgo + ' hours\' time'
   }
 }
 
@@ -618,41 +623,31 @@ function updateTimesOnPage () {
   const yourTime = getLocalTime()
   document.getElementById('your-time').innerHTML = `
     <div>Your Time</div>
-    <div>${getDayOfWeek(yourTime)}</div>
     <div>${getPrettyTime(yourTime)}</div>
-    <div>${getPrettyDate(yourTime)}</div>
+    <div>${getDayOfWeek(yourTime)} ${getPrettyDate(yourTime)}</div>
   `
 
   const ourTimezone = getTimezoneFromString(timetable[ourCurrentActivity].startTime)
   const ourTime = getLocalTime({timezone: ourTimezone})
   document.getElementById('our-time').innerHTML = `
     <div>Our Time</div>
-    <div>${getDayOfWeek(ourTime)}</div>
     <div>${getPrettyTime(ourTime)}</div>
-    <div>${getPrettyDate(ourTime)}</div>
+    <div>${getDayOfWeek(ourTime)} ${getPrettyDate(ourTime)}</div>
   `
 
   if (now.getTimezoneOffset() !== -getTimezoneOffset('nz')) {
     const nzTime = getLocalTime({timezone: 'nz'})
     document.getElementById('nz-time').innerHTML = `
       <div>New Zealand Time</div>
-      <div>${getDayOfWeek(nzTime)}</div>
       <div>${getPrettyTime(nzTime)}</div>
-      <div>${getPrettyDate(nzTime)}</div>
+      <div>${getDayOfWeek(nzTime)} ${getPrettyDate(nzTime)}</div>
     `
   }
-}
-
-function updateEventDetails (event) {
-  document.getElementById('event-details').innerHTML = `
-    <div>${event.name}</div>
-  `
 }
 
 function setEvent (index) {
   currentActivityIndex = index
   updateTimesOnPage()
-  updateEventDetails(timetable[currentActivityIndex])
   createEventsList()
   initMap()
 }
@@ -738,6 +733,12 @@ function drawFlights () {
     }
     new google.maps.Polyline(flightOptions)
   })
+
+  const bounds = new google.maps.LatLngBounds();
+  bounds.extend(start)
+  bounds.extend(end)
+
+  map.fitBounds(bounds);
 }
 
 function drawRoadTrips () {
@@ -748,7 +749,7 @@ function drawRoadTrips () {
 
   const directionsService = new google.maps.DirectionsService()
   const directionsDisplay = new google.maps.DirectionsRenderer({
-    suppressMarkers: true
+    // suppressMarkers: true
   })
   directionsDisplay.setMap(map)
   var request = {
@@ -769,5 +770,4 @@ function createButtons () {
 }
 
 updateTimesOnPage()
-updateEventDetails(timetable[currentActivityIndex])
 createEventsList()

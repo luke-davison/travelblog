@@ -1,32 +1,58 @@
 /* Always set the map height explicitly to define the size of the div
 * element that contains the map. */
 #map {
-    height: 600px;
-    width: 1000px;
+    height: 70vh;
+    width: 100%;
 }
 /* Optional: Makes the sample page fill the window. */
-html, body {
+html {
     min-height: 100%;
     margin: 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: auto;
-    justify-content: center;
 }
 
 body {
-    display: grid;
-    grid-template-columns: auto;
-    justify-content: center;
-    align-items: center;
-    grid-gap: 30px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#background-image {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -100;
+    opacity: 0.5;
+    background-image: url(background.jpg);
+}
+
+#content {
     max-width: 900px;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+#id {
+    height: 30vh;
+    width: 100%;
 }
 
 #page-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-items: center;
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+}
+
+#page-header>div {
+    width: 33%;
+}
+
+#page-header>div>div {
+    width: 100%;
+    text-align: center;
 }
 
 #event-details {
@@ -34,7 +60,18 @@ body {
 }
 
 #event-list {
-    display: grid;
-    grid-gap: 20px;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#event-list>div {
+    display: inline-block;
+    margin: 10px;
+    width: 20%;
+}
+
+#event-list>div>div {
+    width: 100%;
+    text-align: center;
 }

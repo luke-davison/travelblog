@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Simple Map</title>
+    <title>Where are Luke and Betty?</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="styles.css">
   </head>
   <body>
-    <div id="page-header">
-      <div id="your-time"></div>
-      <div id="nz-time"></div>
-      <div id="our-time"></div>
-      <div id="event-details"></div>
+    <div id="background-image"></div>
+    <div id="content">
+      <div id="upper-section">
+        <div id="page-header">
+          <div id="your-time"></div>
+          <div id="nz-time"></div>
+          <div id="our-time"></div>
+        </div>
+        <div id="event-list"></div>
+      </div>
+      <div id="map"></div>
     </div>
-    <div id="event-list"></div>
-    <div id="map"></div>
     <script src="scripts/setup.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDK7AqhtPAHCOjEYZKGDoFZ09h9nkhRBoc&callback=initMap" async defer></script>
   </body>
