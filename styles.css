@@ -19,6 +19,8 @@ body {
     grid-template-columns: auto;
     justify-content: center;
     align-items: center;
+    grid-gap: 30px;
+    max-width: 900px;
 }
 
 #page-header {
@@ -29,4 +31,10 @@ body {
 
 #event-details {
     grid-column: 1 / span 3;
+}
+
+#event-list {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }

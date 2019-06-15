@@ -22,6 +22,7 @@ function getDayOfWeek (date) {
 
 function getLocalTime ({timezone, date} = {}) {
   const offset = timezone ? getTimezoneOffset(timezone) : now.getTimezoneOffset()
+  console.log(offset)
   return new Date(getUtcTime(date).getTime() + (offset * 60000))
 }
 
@@ -662,6 +663,7 @@ function createEventsList () {
 
   for (let i = currentActivityIndex - numOfEvents; i < currentActivityIndex; i++) {
     if (i < 0) {
+      eventsList += '<div></div>'
       continue
     }
     const event = timetable[i]
@@ -672,15 +674,15 @@ function createEventsList () {
       <div>
         <div>${hoursAgo}</div>
         <div><a href="#" onClick="setEvent(${i})">${event.name}</a></div>
-      <div>
+      </div>
     `
   }
 
   eventsList += `
-      <div>
+      <div class="current-event">
         <div></div>
         <div>${timetable[currentActivityIndex].name}</div>
-      <div>
+      </div>
     `
 
   for (let i = currentActivityIndex + 1; i < currentActivityIndex + numOfEvents + 1; i++) {
@@ -695,7 +697,7 @@ function createEventsList () {
       <div>
         <div>${hoursAgo}</div>
         <div><a href="#" onClick="setEvent(${i})">${event.name}</a></div>
-      <div>
+      </div>
     `
   }
 
