@@ -22,7 +22,7 @@ function getDayOfWeek (date) {
 
 function getLocalTime ({timezone, date} = {}) {
   const offset = timezone ? getTimezoneOffset(timezone) : 0 - now.getTimezoneOffset()
-  return new Date(getUtcTime(date).getTime() + (offset * 60000))
+  return new Date(getUtcTime(date).getTime() - (offset * 60000))
 }
 
 function getPrettyDate (date) {
@@ -65,7 +65,7 @@ function getUtcTime (date) {
   if (!date) {
     date = now
   }
-  return new Date(date.getTime() + (date.getTimezoneOffset() * 60000))
+  return new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
 }
 
 function getDifferenceInHours (date) {
@@ -134,7 +134,7 @@ var timetable = [
     zoom: 6
   },
   {
-    startTime: '2019/06/19 7:45nz',
+    startTime: '2019/06/19 19:00nz',
     name: 'Flying to San Francisco',
     travelType: 'plane',
     start: auckland,
@@ -591,7 +591,13 @@ function initMap () {
   const {start, end, zoom} = timetable[currentActivityIndex]
   const mapOptions = {
     center: getCenter(start, end),
-    disableDefaultUI: true,
+    zoomControl: true,
+    mapTypeControl: false,
+    scaleControl: true,
+    streetViewControl: false,
+    rotateControl: false,
+    fullscreenControl: false,
+    // disableDefaultUI: true,
     // draggable: false,
     zoom: zoom
   }
@@ -611,7 +617,7 @@ var currentActivityIndex = timetable.findIndex((event, index) => {
   const eventDate = getTimeFromString(nextEvent.startTime)
   return eventDate > now
 }) || 0
-var ourCurrentActivity = currentActivityIndex
+var ourCurrentActivityIndex = currentActivityIndex
 
 function getRecentEvents () {
   return timetable.filter((event, index) => {
@@ -627,7 +633,7 @@ function updateTimesOnPage () {
     <div>${getDayOfWeek(yourTime)} ${getPrettyDate(yourTime)}</div>
   `
 
-  const ourTimezone = getTimezoneFromString(timetable[ourCurrentActivity].startTime)
+  const ourTimezone = getTimezoneFromString(timetable[ourCurrentActivityIndex].startTime)
   const ourTime = getLocalTime({timezone: ourTimezone})
   document.getElementById('our-time').innerHTML = `
     <div>Our Time</div>
@@ -661,42 +667,35 @@ function createEventsList () {
       eventsList += '<div></div>'
       continue
     }
-    const event = timetable[i]
-    const startDate = getTimeFromString(timetable[i + 1].startTime)
-    const hoursAgo = getDifferenceInHours(startDate)
-
-    eventsList += `
-      <div>
-        <div>${hoursAgo}</div>
-        <div><a href="#" onClick="setEvent(${i})">${event.name}</a></div>
-      </div>
-    `
+    eventsList += createEvent(i)
   }
 
-  eventsList += `
-      <div class="current-event">
-        <div></div>
-        <div>${timetable[currentActivityIndex].name}</div>
-      </div>
-    `
+  eventsList += createEvent(currentActivityIndex)
 
   for (let i = currentActivityIndex + 1; i < currentActivityIndex + numOfEvents + 1; i++) {
     if (i > timetable.length - 1) {
       continue
     }
-    const event = timetable[i]
-    const startDate = getTimeFromString(timetable[i].startTime)
-    const hoursAgo = getDifferenceInHours(startDate)
-
-    eventsList += `
-      <div>
-        <div>${hoursAgo}</div>
-        <div><a href="#" onClick="setEvent(${i})">${event.name}</a></div>
-      </div>
-    `
+    eventsList += createEvent(i)
   }
 
   document.getElementById('event-list').innerHTML = eventsList
+}
+
+function createEvent (i) {
+  const event = timetable[i]
+  const startTimezone = getTimezoneFromString(timetable[i].startTime)
+  const startDate = getTimeFromString(i > ourCurrentActivityIndex ? timetable[i].startTime : timetable[i + 1].startTime)
+  const localStartDate = getLocalTime({timezone: startTimezone, date: startDate})
+  const hoursAgo = getDifferenceInHours(localStartDate)
+  const className = i === ourCurrentActivityIndex ? 'in-progress' : i === currentActivityIndex ? 'viewing' : ''
+
+  return `
+    <div class="${className}">
+      <div>${i === ourCurrentActivityIndex ? '' : hoursAgo}</div>
+      <div><a href="#" onClick="setEvent(${i})">${event.name}</a></div>
+    </div>
+    `
 }
 
 function drawFlights () {
