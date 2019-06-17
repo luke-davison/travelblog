@@ -86,6 +86,28 @@ body {
     text-align: center;
 }
 
+@media only screen and (max-width: 600px) {
+    #event-list>a {
+        width: 33%;
+    }
+    #event-list>a:nth-child(1), #event-list>a:nth-child(5) {
+        display: none;
+    }
+
+    #page-header {
+        flex-wrap: wrap;
+    }
+
+    #page-header #nz-time {
+        width: 100%;
+        order: -1;
+    }
+
+    #page-header #your-time, #page-header #our-time {
+        width:50%;
+    }
+}
+
 #event-list>a:hover {
   cursor: pointer;
 }

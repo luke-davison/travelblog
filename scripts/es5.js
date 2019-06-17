@@ -8,8 +8,7 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-// const now = new Date()
-var now = new Date(2019, 5, 22, 7, 0); // used for testing
+var now = new Date(); // const now = new Date(2019, 5, 22, 7, 0) // used for testing
 
 function getCenter(coord1, coord2) {
   if (!coord2) {
