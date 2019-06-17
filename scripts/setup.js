@@ -1,5 +1,5 @@
 // const now = new Date()
-const now = new Date(2019, 5, 19, 21, 45) // used for testing
+const now = new Date(2019, 5, 20, 21, 45) // used for testing
 
 function getCenter (coord1, coord2) {
   if (!coord2) {
@@ -21,8 +21,12 @@ function getDayOfWeek (date) {
 }
 
 function getLocalTime ({timezone, date} = {}) {
-  const offset = timezone ? getTimezoneOffset(timezone) : 0 - now.getTimezoneOffset()
-  return new Date(getUtcTime(date).getTime() - (offset * 60000))
+  if (!timezone) {
+    return now
+  }
+  const offset = getTimezoneOffset(timezone)
+  const localDate = new Date(getUtcTime({date}).getTime() - (offset * 60000))
+  return localDate
 }
 
 function getPrettyDate (date) {
@@ -52,25 +56,26 @@ function getTimezoneFromString (string) {
 
 function getTimezoneOffset (timezone) {
   switch (timezone) {
-    case 'et': return -(6 * 60)
-    case 'mt': return -(7 * 60)
-    case 'nz': return (12 * 60)
-    case 'pt': return -(8 * 60)
+    case 'et': return (4 * 60)
+    case 'mt': return (6 * 60)
+    case 'nz': return -(12 * 60)
+    case 'pt': return (7 * 60)
     case 'utc': return 0
     default: return 0
   }
 }
 
-function getUtcTime (date) {
+function getUtcTime (date, timezone) {
   if (!date) {
     date = now
   }
-  return new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+  const utcTime = new Date(date.getTime() + (date.getTimezoneOffset() * 60000))
+  return utcTime
 }
 
 function getDifferenceInHours (date) {
   const now = getUtcTime().getTime()
-  const then = getUtcTime(date).getTime()
+  const then = getUtcTime({date}).getTime() + getTimezoneOffset()
   const hoursAgo = Math.floor((then - now) / (1000 * 60 * 60))
   if (hoursAgo === -1) {
     return '1 hour ago'
@@ -585,6 +590,10 @@ var timetable = [
   }
 ]
 
+timetable.forEach((event) => {
+  event.startTimeUtc = getUtcTime()
+})
+
 var map
 
 function initMap () {
@@ -614,7 +623,10 @@ var currentActivityIndex = timetable.findIndex((event, index) => {
     return true
   }
 
-  const eventDate = getTimeFromString(nextEvent.startTime)
+  const date = getTimeFromString(nextEvent.startTime)
+  const timezone = getTimezoneFromString(nextEvent.startTime)
+  const eventDate = getLocalTime({date, timezone})
+
   return eventDate > now
 }) || 0
 var ourCurrentActivityIndex = currentActivityIndex
@@ -634,6 +646,7 @@ function updateTimesOnPage () {
   `
 
   const ourTimezone = getTimezoneFromString(timetable[ourCurrentActivityIndex].startTime)
+  console.log(ourTimezone)
   const ourTime = getLocalTime({timezone: ourTimezone})
   if (timetable[ourCurrentActivityIndex].travelType === 'plane') {
     document.getElementById('our-time').innerHTML = `
