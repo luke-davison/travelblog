@@ -1,5 +1,5 @@
-const now = new Date()
-// const now = new Date(2019, 6, 2, 9, 45) // used for testing
+// const now = new Date()
+const now = new Date(2019, 5, 19, 21, 45) // used for testing
 
 function getCenter (coord1, coord2) {
   if (!coord2) {
@@ -635,20 +635,21 @@ function updateTimesOnPage () {
 
   const ourTimezone = getTimezoneFromString(timetable[ourCurrentActivityIndex].startTime)
   const ourTime = getLocalTime({timezone: ourTimezone})
-  document.getElementById('our-time').innerHTML = `
-    <div>Our Time</div>
-    <div>${getPrettyTime(ourTime)}</div>
-    <div>${getDayOfWeek(ourTime)} ${getPrettyDate(ourTime)}</div>
-  `
-
-  if (now.getTimezoneOffset() !== -getTimezoneOffset('nz')) {
-    const nzTime = getLocalTime({timezone: 'nz'})
-    document.getElementById('nz-time').innerHTML = `
-      <div>New Zealand Time</div>
-      <div>${getPrettyTime(nzTime)}</div>
-      <div>${getDayOfWeek(nzTime)} ${getPrettyDate(nzTime)}</div>
+  if (timetable[ourCurrentActivityIndex].travelType === 'plane') {
+    document.getElementById('our-time').innerHTML = `
+      <div>Our Time</div>
+      <div>In Flight</div>
+    `
+  } else {
+    document.getElementById('our-time').innerHTML = `
+      <div>Our Time</div>
+      <div>${getPrettyTime(ourTime)}</div>
+      <div>${getDayOfWeek(ourTime)} ${getPrettyDate(ourTime)}</div>
     `
   }
+
+  document.getElementById('nz-time').innerHTML = `
+      <div>Where are Luke and Betty?</div>`
 }
 
 function setEvent (index) {
@@ -664,7 +665,7 @@ function createEventsList () {
 
   for (let i = currentActivityIndex - numOfEvents; i < currentActivityIndex; i++) {
     if (i < 0) {
-      eventsList += '<div></div>'
+      eventsList += '<a class="hide"></a>'
       continue
     }
     eventsList += createEvent(i)
@@ -691,10 +692,10 @@ function createEvent (i) {
   const className = i === ourCurrentActivityIndex ? 'in-progress' : i === currentActivityIndex ? 'viewing' : ''
 
   return `
-    <div class="${className}">
+    <a onClick="setEvent(${i})" class="${className}">
       <div>${i === ourCurrentActivityIndex ? '' : hoursAgo}</div>
-      <div><a href="#" onClick="setEvent(${i})">${event.name}</a></div>
-    </div>
+      <div>${event.name}</div>
+    </a>
     `
 }
 
