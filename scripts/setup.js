@@ -1,5 +1,5 @@
-// const now = new Date()
-const now = new Date(2019, 5, 20, 21, 45) // used for testing
+const now = new Date()
+// const now = new Date(2019, 5, 20, 21, 45) // used for testing
 
 function getCenter (coord1, coord2) {
   if (!coord2) {
@@ -65,7 +65,7 @@ function getTimezoneOffset (timezone) {
   }
 }
 
-function getUtcTime (date, timezone) {
+function getUtcTime ({date, timezone} = {}) {
   if (!date) {
     date = now
   }
